@@ -1,23 +1,30 @@
 import discord
 import os
 from dotenv import load_dotenv
-
+from discord.ext import commands
+import botcontroller
 load_dotenv()
 
 intents = discord.Intents.default()
 intents.message_content = True
 
-client = discord.Client(intents=intents)
+bot = commands.Bot(command_prefix='!', intents=intents)
 
-@client.event
+@bot.event
 async def on_ready():
-    print(f'Logged in as {client.user}')
+    print(f'Logged in as {bot.user}')
 
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
-    if message.content == '!ping':
-        await message.channel.send('Pong!')
+@bot.command()
+async def initialise(ctx, user_id: str):
+    botcontroller.add_member(user_id, "unknown")
 
-client.run(os.getenv('DISCORD_TOKEN'))
+
+
+
+
+
+
+
+
+
+bot.run(os.getenv('DISCORD_TOKEN'))
